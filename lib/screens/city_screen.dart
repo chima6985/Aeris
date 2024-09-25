@@ -55,7 +55,7 @@ class _CityScreenState extends State<CityScreen> {
                 ],
               ),
               const SizedBox(
-                height: 150,
+                height: 120,
               ),
               Expanded(
                 child: Container(
@@ -104,14 +104,14 @@ class _CityScreenState extends State<CityScreen> {
                             children: [
                               Text(
                                 '25',
-                                style: kMiddleContStyle.copyWith(fontSize: 155),
+                                style: kMiddleContStyle.copyWith(fontSize: 130),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: 30),
+                                padding: const EdgeInsets.only(top: 40),
                                 child: Text(
                                   '\u00B0\u1D9c',
                                   style:
-                                      kMiddleContStyle.copyWith(fontSize: 70),
+                                      kMiddleContStyle.copyWith(fontSize: 35),
                                 ),
                               ),
                             ],
@@ -127,7 +127,7 @@ class _CityScreenState extends State<CityScreen> {
                 ),
               ),
               const SizedBox(
-                height: 250,
+                height: 200,
               )
             ],
           ),
