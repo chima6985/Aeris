@@ -1,9 +1,11 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:aeris/screens/location_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aeris/services/location.dart';
 import 'package:aeris/utilities/constants.dart';
 import 'package:aeris/services/networking.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -35,23 +37,27 @@ class _LoadingScreenState extends State<LoadingScreen> {
             'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
 
     var weatherData = await networkHelper.getData();
-
-
-
+    // ignore: use_build_context_synchronously
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const LocationScreen();
+        },
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return const Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: SpinKitWave(
+          color: Colors.purple,
+          size: 100,
+        ),
+      ),
+    );
   }
 }
-
-
-    // log(condition.toString());
-    // log(temperature.toString());
-    // log(cityName);
-    // try {
-    //   getData();
-    // } catch (e) {
-    //   log("Error occurred while fetching data: $e");
-    // }
