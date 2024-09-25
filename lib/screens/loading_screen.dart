@@ -1,7 +1,9 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
-import 'package:aeris/location.dart';
-import 'package:http/http.dart';
-import 'dart:developer';
+import 'package:aeris/services/location.dart';
+import 'package:aeris/utilities/constants.dart';
+import 'package:aeris/services/networking.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -12,24 +14,32 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  double? latitude;
+  double? longitude;
+
   @override
   void initState() {
-    getLocation();
+    getLocationData();
     super.initState();
   }
 
-  void getLocation() async {
+  void getLocationData() async {
     Location location = Location();
     await location.getCurrentLocation();
-    log(location.latitude.toString());
-    log(location.longitude.toString());
+
+    latitude = (location.latitude);
+    longitude = (location.longitude);
+
+    NetworkHelper networkHelper = NetworkHelper(
+        Url:
+            'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+
+    var weatherData = await networkHelper.getData();
+
+
+
   }
 
-  void getData() async {
-    Response response = await get(Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=8e39b429d28e028745f57125333388f8'));
-    log(response.statusCode.toString());
-  }
   @override
   Widget build(BuildContext context) {
     return const Scaffold();
@@ -37,5 +47,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
 }
 
 
-
-
+    // log(condition.toString());
+    // log(temperature.toString());
+    // log(cityName);
+    // try {
+    //   getData();
+    // } catch (e) {
+    //   log("Error occurred while fetching data: $e");
+    // }

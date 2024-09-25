@@ -24,3 +24,4 @@ const kActiveCardColor  = Color(0XFFFFFFFF);
 const  kInactiiveCardColor =  Color(0xFF8862FC);
 const kBackgroundColor = Color(0xFF7047EB);
 const kNotModalColor =   Color(0XFF737272);
+const apiKey = '8e39b429d28e028745f57125333388f8';
