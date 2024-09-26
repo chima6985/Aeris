@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class ForecastDate extends StatelessWidget {
   final String day;
-  final String imagePath;
+  final String image;
   final String temper;
   final bool isShowDivider;
 
   const ForecastDate({
     super.key,
     required this.day,
-    required this.imagePath,
+    required this.image,
     required this.temper,
     this.isShowDivider = true,
   });
@@ -20,15 +20,12 @@ class ForecastDate extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 24,right: 24),
+              padding: const EdgeInsets.only(left: 24, right: 24),
               child: Row(
-                
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
@@ -37,10 +34,9 @@ class ForecastDate extends StatelessWidget {
                     style: kMiddleContStyle.copyWith(
                         fontSize: 13, color: Colors.black),
                   ),
-                  Image.asset(
-                    imagePath,
-                    width: 48.17,
-                    height: 27.04,
+                  Text(
+                    image,
+                    style: const  TextStyle(fontSize: 20),
                   ),
                   Row(
                     children: [
@@ -64,16 +60,15 @@ class ForecastDate extends StatelessWidget {
                 ],
               ),
             ),
-           const  SizedBox(
+            const SizedBox(
               height: 8.01,
             ),
             if (isShowDivider)
-            const   SizedBox(
+              const SizedBox(
                 width: double.infinity,
-                child:  Divider(
+                child: Divider(
                   color: Colors.black,
                   height: 17,
-                  
                   thickness: 0.5,
                 ),
               ),

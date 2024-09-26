@@ -460,23 +460,19 @@ class _LocationScreenState extends State<LocationScreen> {
                                             children: [
                                               ForecastDate(
                                                   day: 'November 12',
-                                                  imagePath:
-                                                      'images/sun_icon.png',
+                                                  image: '🌤️',
                                                   temper: '28'),
                                               ForecastDate(
                                                   day: 'November 13',
-                                                  imagePath:
-                                                      'images/sun_icon.png',
+                                                  image: '☀️',
                                                   temper: '28'),
                                               ForecastDate(
                                                   day: 'November 14',
-                                                  imagePath:
-                                                      'images/sun_icon.png',
+                                                  image: '🌤️',
                                                   temper: '28'),
                                               ForecastDate(
                                                   day: 'November 15',
-                                                  imagePath:
-                                                      'images/sun_icon.png',
+                                                  image: '☀️',
                                                   temper: '28'),
                                             ],
                                           ),
