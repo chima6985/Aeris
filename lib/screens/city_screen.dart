@@ -55,7 +55,7 @@ class _CityScreenState extends State<CityScreen> {
                 ],
               ),
               const SizedBox(
-                height: 120,
+                height: 140,
               ),
               Expanded(
                 child: Container(
@@ -66,68 +66,70 @@ class _CityScreenState extends State<CityScreen> {
                   width: double.infinity,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Image.asset(
-                                'images/weather_icon.png',
-                                width: 90.71,
-                                height: 90.34,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Today',
-                                  style:
-                                      kMiddleContStyle.copyWith(fontSize: 30.0),
-                                ),
-                                const Text(
-                                  'Mon, 26 Apr',
-                                  style: kTextStyle,
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                        Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                '25',
-                                style: kMiddleContStyle.copyWith(fontSize: 130),
+                              const Center(
+                                  child: Text(
+                                '🌧️',
+                                style: TextStyle(fontSize: 50),
+                              )),
+                              const SizedBox(
+                                width: 15,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 40),
-                                child: Text(
-                                  '\u00B0\u1D9c',
-                                  style:
-                                      kMiddleContStyle.copyWith(fontSize: 35),
-                                ),
-                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Today',
+                                    style: kMiddleContStyle.copyWith(
+                                        fontSize: 30.0),
+                                  ),
+                                  const Text(
+                                    'Mon, 26 Apr',
+                                    style: kTextStyle,
+                                  )
+                                ],
+                              )
                             ],
                           ),
-                        ),
-                        Text(
-                          'Abuja, Nigeria * 2:00 pm',
-                          style: kMiddleContStyle.copyWith(fontSize: 16),
-                        )
-                      ],
+                          Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '25',
+                                  style:
+                                      kMiddleContStyle.copyWith(fontSize: 130),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 40),
+                                  child: Text(
+                                    '\u00B0\u1D9c',
+                                    style:
+                                        kMiddleContStyle.copyWith(fontSize: 35),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            'Abuja, Nigeria * 2:00 pm',
+                            style: kMiddleContStyle.copyWith(fontSize: 16),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
               const SizedBox(
-                height: 200,
+                height: 240,
               )
             ],
           ),

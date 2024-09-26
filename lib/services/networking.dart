@@ -7,7 +7,7 @@ NetworkHelper({required this.Url});
 
 final String Url;
 
-Future <void> getData() async {
+Future <dynamic> getData() async {
   http.Response response = await http.get(Uri.parse(Url));
 
     if (response.statusCode == 200) {

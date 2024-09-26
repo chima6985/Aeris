@@ -1,13 +1,15 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'constants.dart';
 
 class TodayWeather extends StatefulWidget {
-  final String imagePath;
+  final String image;
   final String text;
   final String temp;
   const TodayWeather(
       {super.key,
-      required this.imagePath,
+      required this.image,
       required this.text,
       required this.temp});
 
@@ -39,11 +41,7 @@ class _TodayWeatherState extends State<TodayWeather> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 13.86, bottom: 13.86),
-            child: Image.asset(
-              widget.imagePath,
-              width: 33.1,
-              height: 33.58,
-            ),
+            child: Text(widget.image,style: const  TextStyle(fontWeight: FontWeight.w700),)
           ),
           Text(
             widget.text,

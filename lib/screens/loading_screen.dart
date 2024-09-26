@@ -16,8 +16,8 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  double? latitude;
-  double? longitude;
+  // double? latitude;
+  // double? longitude;
 
   @override
   void initState() {
@@ -29,20 +29,21 @@ class _LoadingScreenState extends State<LoadingScreen> {
     Location location = Location();
     await location.getCurrentLocation();
 
-    latitude = (location.latitude);
-    longitude = (location.longitude);
+    // latitude = (location.latitude);
+    // longitude = (location.longitude);
 
     NetworkHelper networkHelper = NetworkHelper(
         Url:
-            'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+            'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric');
 
-    var weatherData = await networkHelper.getData();
+    final weatherData = await networkHelper.getData();
+
     // ignore: use_build_context_synchronously
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
-          return const LocationScreen();
+          return  LocationScreen(locationWeather: weatherData,);
         },
       ),
     );
@@ -55,7 +56,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       body: Center(
         child: SpinKitWave(
           color: Colors.purple,
-          size: 100,
+          size: 100
         ),
       ),
     );

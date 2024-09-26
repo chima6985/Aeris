@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 class NotificationModal extends StatelessWidget {
   final String time;
   final String text;
-  final String imagepath;
+  final String image;
   final bool isShowDivider;
 
   const NotificationModal({
     super.key,
     required this.time,
     required this.text,
-    required this.imagepath,
+    required this.image,
     this.isShowDivider = true,
   });
 
@@ -24,13 +24,7 @@ class NotificationModal extends StatelessWidget {
             children: [
               const SizedBox(width: 28),
               Padding(
-                padding: const EdgeInsets.only(top: 0),
-                child: Image.asset(
-                  imagepath,
-                  width: 24,
-                  height: 24,
-                ),
-              ),
+                  padding: const EdgeInsets.only(top: 0), child: Text(image)),
               const SizedBox(width: 9),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +50,6 @@ class NotificationModal extends StatelessWidget {
               color: Colors.black,
               height: 17,
               thickness: 0.5,
-        
             ),
         ],
       ),
