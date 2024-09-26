@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, unused_local_variable
+// ignore_for_file: library_private_types_in_public_api, unused_local_variable, prefer_typing_uninitialized_variables
 
 import 'dart:developer';
 
@@ -8,6 +8,7 @@ import '../utilities/constants.dart';
 import '../utilities/today_weather.dart';
 import '../utilities/notification_modal.dart';
 import 'package:aeris/utilities/forecast_date.dart';
+import '../services/weather.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, this.locationWeather});
@@ -19,8 +20,9 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  WeatherModel weather = WeatherModel();
   late int temperature;
-  late int condition;
+  late String weatherIcon;
   late String cityName;
 
   // Change bottomCardColor to active color on tap
@@ -30,10 +32,12 @@ class _LocationScreenState extends State<LocationScreen> {
   void initState() {
     super.initState();
     updateUI(widget.locationWeather);
+    print(DateTime.now());
   }
 
   void updateUI(weatherData) {
-    condition = weatherData['weather'][0]['id'];
+    var condition = weatherData['weather'][0]['id'];
+    weatherIcon = condition == null ? '' : weather.getWeatherIcon(condition);
     double temp = weatherData['main']['temp'];
     temperature = temp.toInt();
     cityName = weatherData['name'];
@@ -161,11 +165,11 @@ class _LocationScreenState extends State<LocationScreen> {
                                               ),
                                             ),
                                           ),
-                                          const NotificationModal(
+                                          NotificationModal(
                                             time: '10 minuites ago',
                                             text:
                                                 'Its a sunny day in your location',
-                                            image: '☀️',
+                                            image: weatherIcon,
                                             isShowDivider: false,
                                           ),
                                           Padding(
@@ -367,37 +371,37 @@ class _LocationScreenState extends State<LocationScreen> {
                                   const SizedBox(
                                     height: 15.0,
                                   ),
-                                  const Row(
+                                  Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       TodayWeather(
                                         text: '8 a.m',
-                                        image: '☀️',
+                                        image: weatherIcon,
                                         temp: '28',
                                       ),
-                                      SizedBox(width: 24),
+                                      const SizedBox(width: 24),
                                       TodayWeather(
                                         text: '10 a.m',
-                                        image: '🌤️',
+                                        image: weatherIcon,
                                         temp: '28',
                                       ),
-                                      SizedBox(width: 24),
+                                      const SizedBox(width: 24),
                                       TodayWeather(
                                         text: '12 a.m',
-                                        image: '☀️',
+                                        image: weatherIcon,
                                         temp: '28',
                                       ),
-                                      SizedBox(width: 24),
+                                      const SizedBox(width: 24),
                                       TodayWeather(
                                         text: '2 p.m',
-                                        image: '🌤️',
+                                        image: weatherIcon,
                                         temp: '29',
                                       ),
-                                      SizedBox(width: 24),
+                                      const SizedBox(width: 24),
                                       TodayWeather(
                                         text: '4 p.m',
-                                        image: '🌤️',
+                                        image: weatherIcon,
                                         temp: '30',
                                       )
                                     ],
@@ -450,8 +454,8 @@ class _LocationScreenState extends State<LocationScreen> {
                                           borderRadius:
                                               BorderRadius.circular(16.02),
                                         ),
-                                        child: const Padding(
-                                          padding: EdgeInsets.only(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
                                               top: 20, left: 10, right: 10),
                                           child: Column(
                                             mainAxisAlignment:
@@ -460,19 +464,19 @@ class _LocationScreenState extends State<LocationScreen> {
                                             children: [
                                               ForecastDate(
                                                   day: 'November 12',
-                                                  image: '🌤️',
+                                                  image: weatherIcon,
                                                   temper: '28'),
                                               ForecastDate(
                                                   day: 'November 13',
-                                                  image: '☀️',
+                                                  image: weatherIcon,
                                                   temper: '28'),
                                               ForecastDate(
                                                   day: 'November 14',
-                                                  image: '🌤️',
+                                                  image: weatherIcon,
                                                   temper: '28'),
                                               ForecastDate(
                                                   day: 'November 15',
-                                                  image: '☀️',
+                                                  image: weatherIcon,
                                                   temper: '28'),
                                             ],
                                           ),

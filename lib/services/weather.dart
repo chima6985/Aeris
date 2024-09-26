@@ -19,15 +19,15 @@ class WeatherModel {
     }
   }
 
-  // String getMessage(dynamic temp) {
-  //   if (temp > 25) {
-  //     return 'It\'s 🍦 time';
-  //   } else if (temp > 20) {
-  //     return 'Time for shorts and 👕';
-  //   } else if (temp < 10) {
-  //     return 'You\'ll need 🧣 and 🧤';
-  //   } else {
-  //     return 'Bring a 🧥 just in case';
-  //   }
-  // }
+  String getMessage(dynamic temp) {
+    if (temp > 25) {
+      return 'It\'s sunny in your location';
+    } else if (temp > 20) {
+      return 'Time for shorts and 👕';
+    } else if (temp < 10) {
+      return 'it/s really cold in your location';
+    } else {
+      return 'Bring a 🧥 just in case';
+    }
+  }
   }

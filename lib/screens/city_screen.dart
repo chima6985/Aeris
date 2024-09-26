@@ -13,10 +13,10 @@ class CityScreen extends StatefulWidget {
 class _CityScreenState extends State<CityScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: kBackgroundColor,
-        body: Container(
+    return Scaffold(
+      backgroundColor: kBackgroundColor,
+      body: SafeArea(
+        child: Container(
           margin: const EdgeInsets.all(8.0),
           child: Column(
             children: [
