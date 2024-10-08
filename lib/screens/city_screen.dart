@@ -2,15 +2,46 @@
 
 import 'package:flutter/material.dart';
 import '../utilities/constants.dart';
+import 'package:intl/intl.dart';
+import '../services/weather.dart';
+import 'dart:developer';
 
 class CityScreen extends StatefulWidget {
-  const CityScreen({super.key});
+  const CityScreen({super.key, this.cityWeather});
+
+  // ignore: prefer_typing_uninitialized_variables
+  final cityWeather;
 
   @override
   _CityScreenState createState() => _CityScreenState();
 }
 
 class _CityScreenState extends State<CityScreen> {
+  WeatherModel cityWeather = WeatherModel();
+  late int temperature;
+  late String weatherIcon;
+  late String cityName;
+  late String weatherMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    updateCityUI(widget.cityWeather);
+  }
+
+  void updateCityUI(weatherData) {
+    var condition = weatherData['weather'][0]['id'];
+    weatherIcon =
+        condition == null ? '' : cityWeather.getWeatherIcon(condition);
+    double temp = weatherData['main']['temp'];
+    temperature = temp.toInt();
+    // ignore: unnecessary_null_comparison
+    weatherMessage =
+        temperature == null ? '' : cityWeather.getMessage(temperature);
+    cityName = weatherData['name'];
+    log(temperature.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +106,8 @@ class _CityScreenState extends State<CityScreen> {
                             children: [
                               const Center(
                                   child: Text(
-                                '🌧️',
-                                style: TextStyle(fontSize: 50),
+                                '⛈️',
+                                style: const TextStyle(fontSize: 50),
                               )),
                               const SizedBox(
                                 width: 15,
@@ -103,7 +134,7 @@ class _CityScreenState extends State<CityScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '25',
+                                  '$temperature',
                                   style:
                                       kMiddleContStyle.copyWith(fontSize: 130),
                                 ),
@@ -119,7 +150,7 @@ class _CityScreenState extends State<CityScreen> {
                             ),
                           ),
                           Text(
-                            'Abuja, Nigeria * 2:00 pm',
+                            'Abuja, Nigeria * ${DateFormat.jm().format(DateTime.now())}',
                             style: kMiddleContStyle.copyWith(fontSize: 16),
                           )
                         ],

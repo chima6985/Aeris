@@ -30,4 +30,4 @@ class WeatherModel {
       return 'Bring a 🧥 just in case';
     }
   }
-  }
+}

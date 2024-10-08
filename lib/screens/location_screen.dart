@@ -1,14 +1,16 @@
 // ignore_for_file: library_private_types_in_public_api, unused_local_variable, prefer_typing_uninitialized_variables
 
 import 'dart:developer';
-
 import 'package:aeris/screens/city_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import '../utilities/constants.dart';
 import '../utilities/today_weather.dart';
 import '../utilities/notification_modal.dart';
 import 'package:aeris/utilities/forecast_date.dart';
 import '../services/weather.dart';
+import 'package:intl/intl.dart';
+// import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, this.locationWeather});
@@ -24,6 +26,7 @@ class _LocationScreenState extends State<LocationScreen> {
   late int temperature;
   late String weatherIcon;
   late String cityName;
+  late String weatherMessage;
 
   // Change bottomCardColor to active color on tap
   Color bottomCardColor = kInactiiveCardColor.withOpacity(0.05);
@@ -32,7 +35,7 @@ class _LocationScreenState extends State<LocationScreen> {
   void initState() {
     super.initState();
     updateUI(widget.locationWeather);
-    print(DateTime.now());
+    fetchData();
   }
 
   void updateUI(weatherData) {
@@ -40,8 +43,16 @@ class _LocationScreenState extends State<LocationScreen> {
     weatherIcon = condition == null ? '' : weather.getWeatherIcon(condition);
     double temp = weatherData['main']['temp'];
     temperature = temp.toInt();
+    // ignore: unnecessary_null_comparison
+    weatherMessage = temperature == null ? '' : weather.getMessage(temperature);
     cityName = weatherData['name'];
     log(temperature.toString());
+  }
+
+  void fetchData() async {
+    Response modalapi = await get((Uri.parse(
+        'https://api.openweathermap.org/data/2.5/forecast?lat=37.42219983&lon=-122.084&appid=8e39b429d28e028745f57125333388f8')));
+    print(modalapi.body);
   }
 
   @override
@@ -84,7 +95,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return const CityScreen();
+                                    return CityScreen(cityWeather:widget.locationWeather,);
                                   },
                                 ),
                               );
@@ -167,8 +178,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                           ),
                                           NotificationModal(
                                             time: '10 minuites ago',
-                                            text:
-                                                'Its a sunny day in your location',
+                                            text: weatherMessage,
                                             image: weatherIcon,
                                             isShowDivider: false,
                                           ),
@@ -186,18 +196,16 @@ class _LocationScreenState extends State<LocationScreen> {
                                               ),
                                             ),
                                           ),
-                                          const NotificationModal(
+                                          NotificationModal(
                                             time: '1 day ago',
-                                            text:
-                                                'Its a sunny day in your location',
-                                            image: '☀️',
+                                            text: weatherMessage,
+                                            image: weatherIcon,
                                           ),
                                           const SizedBox(height: 10),
-                                          const NotificationModal(
+                                          NotificationModal(
                                             time: '2 days ago',
-                                            text:
-                                                'Its a sunny day in your location',
-                                            image: '☀️',
+                                            text: weatherMessage,
+                                            image: weatherIcon,
                                           ),
                                           const SizedBox(height: 14),
                                         ],
@@ -233,10 +241,10 @@ class _LocationScreenState extends State<LocationScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Center(
+                              Center(
                                   child: Text(
-                                '🌧️',
-                                style: TextStyle(fontSize: 50),
+                                weatherIcon,
+                                style: const TextStyle(fontSize: 50),
                               )),
                               const SizedBox(
                                 width: 15,
@@ -249,8 +257,9 @@ class _LocationScreenState extends State<LocationScreen> {
                                     style: kMiddleContStyle.copyWith(
                                         fontSize: 30.0),
                                   ),
-                                  const Text(
-                                    'Mon, 26 Apr',
+                                  Text(
+                                    DateFormat('EEE, d MMMM')
+                                        .format(DateTime.now()),
                                     style: kTextStyle,
                                   )
                                 ],
@@ -279,7 +288,7 @@ class _LocationScreenState extends State<LocationScreen> {
                             ),
                           ),
                           Text(
-                            'Lagos, Nigeria * 2:00 pm',
+                            'Lagos, Nigeria * ${DateFormat.jm().format(DateTime.now())}',
                             style: kMiddleContStyle.copyWith(fontSize: 16),
                           )
                         ],
@@ -297,6 +306,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                     child: TextButton(
                       onPressed: () {
+                        fetchData();
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,

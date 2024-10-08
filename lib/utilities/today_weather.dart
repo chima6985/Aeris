@@ -3,21 +3,13 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
 
-class TodayWeather extends StatefulWidget {
+class TodayWeather extends StatelessWidget {
   final String image;
   final String text;
   final String temp;
   const TodayWeather(
-      {super.key,
-      required this.image,
-      required this.text,
-      required this.temp});
+      {super.key, required this.image, required this.text, required this.temp});
 
-  @override
-  _TodayWeatherState createState() => _TodayWeatherState();
-}
-
-class _TodayWeatherState extends State<TodayWeather> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,12 +18,12 @@ class _TodayWeatherState extends State<TodayWeather> {
           Row(
             children: [
               Text(
-                widget.temp,
+                temp,
                 style: kMiddleContStyle.copyWith(
                     color: Colors.black, fontSize: 16),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom:0),
+                padding: const EdgeInsets.only(top: 4),
                 child: Text(
                   '\u00B0\u1D9c',
                   style: kTextStyle.copyWith(fontSize: 20, color: Colors.black),
@@ -40,11 +32,13 @@ class _TodayWeatherState extends State<TodayWeather> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 13.86, bottom: 13.86),
-            child: Text(widget.image,style: const  TextStyle(fontWeight: FontWeight.w700),)
-          ),
+              padding: const EdgeInsets.only(top: 13.86, bottom: 13.86),
+              child: Text(
+                image,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              )),
           Text(
-            widget.text,
+            text,
             style: kMiddleContStyle.copyWith(fontSize: 12, color: Colors.black),
           )
         ],

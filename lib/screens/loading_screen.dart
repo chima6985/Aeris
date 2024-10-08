@@ -43,7 +43,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return  LocationScreen(locationWeather: weatherData,);
+          return LocationScreen(
+            locationWeather: weatherData,
+          );
         },
       ),
     );
@@ -54,10 +56,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return const Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: SpinKitWave(
-          color: Colors.purple,
-          size: 100
-        ),
+        child: SpinKitWave(color: Colors.purple, size: 100),
       ),
     );
   }

@@ -36,7 +36,7 @@ class ForecastDate extends StatelessWidget {
                   ),
                   Text(
                     image,
-                    style: const  TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
                   Row(
                     children: [
@@ -48,7 +48,7 @@ class ForecastDate extends StatelessWidget {
                             color: Colors.black),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 3),
+                        padding: const EdgeInsets.only(top: 5),
                         child: Text(
                           '\u00B0\u1D9c',
                           style: kTextStyle.copyWith(
