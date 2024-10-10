@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, unused_local_variable, prefer_typing_uninitialized_variables
 
 import 'dart:developer';
+import 'package:aeris/model/weather_data_model.dart';
 import 'package:aeris/screens/city_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -53,6 +54,7 @@ class _LocationScreenState extends State<LocationScreen> {
     Response modalapi = await get((Uri.parse(
         'https://api.openweathermap.org/data/2.5/forecast?lat=37.42219983&lon=-122.084&appid=8e39b429d28e028745f57125333388f8')));
     print(modalapi.body);
+    final weatherFromJson = WeatherDataModel.fromJson(json.decode(str));
   }
 
   @override
@@ -78,7 +80,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       child: TextButton.icon(
                         icon: const Icon(Icons.location_pin),
                         onPressed: () {},
-                        label: const Text('Lagos Nigeria '),
+                        label: Text(cityName),
                       ),
                     ),
                     Row(
@@ -95,12 +97,14 @@ class _LocationScreenState extends State<LocationScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return CityScreen(cityWeather:widget.locationWeather,);
+                                    return CityScreen(
+                                      cityWeather: widget.locationWeather,
+                                    );
                                   },
                                 ),
                               );
                             },
-                            icon: const SizedBox(
+                            icon: SizedBox(
                                 width: 21.33,
                                 height: 26,
                                 child: Icon(
@@ -288,7 +292,7 @@ class _LocationScreenState extends State<LocationScreen> {
                             ),
                           ),
                           Text(
-                            'Lagos, Nigeria * ${DateFormat.jm().format(DateTime.now())}',
+                            '$cityName * ${DateFormat.jm().format(DateTime.now())}',
                             style: kMiddleContStyle.copyWith(fontSize: 16),
                           )
                         ],
