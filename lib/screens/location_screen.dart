@@ -1,7 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api, unused_local_variable, prefer_typing_uninitialized_variables
 
+import 'dart:convert';
 import 'dart:developer';
-import 'package:aeris/model/weather_data_model.dart';
+import 'package:aeris/model/weather_data_model.dart' hide Icon;
 import 'package:aeris/screens/city_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -50,13 +51,87 @@ class _LocationScreenState extends State<LocationScreen> {
     log(temperature.toString());
   }
 
-  void fetchData() async {
-    Response modalapi = await get((Uri.parse(
-        'https://api.openweathermap.org/data/2.5/forecast?lat=37.42219983&lon=-122.084&appid=8e39b429d28e028745f57125333388f8')));
-    print(modalapi.body);
-    final weatherFromJson = WeatherDataModel.fromJson(json.decode(str));
-  }
+ Future<void> fetchData() async {
+    try {
+      Response modalapi = await get(Uri.parse(
+          'https://api.openweathermap.org/data/2.5/forecast?lat=37.42219983&lon=-122.084&appid=$apiKey&units=metric'));
+      
+      final weatherData = WeatherDataModel.fromJson(json.decode(modalapi.body));
+      
+      setState(() {
+        List<ListElement> forecasts = weatherData.list;
+        
+        if (forecasts.isNotEmpty) {
+          ListElement firstForecast = forecasts[0];
 
+          temperature = firstForecast.main.temp.round();
+          
+          if (firstForecast.weather.isNotEmpty) {
+            weatherIcon = firstForecast.weather[0].icon.toString();
+          }
+          
+          cityName = weatherData.city.name;
+          
+          weatherMessage = weather.getMessage(temperature);
+        }
+      });
+      
+    } catch (e) {
+      log('Error fetching weather data: $e');
+    }
+}
+
+
+
+  List<Widget> buildHourlyForecast(List<ListElement> forecasts) {
+    List<Widget> hourlyWidgets = [];
+    
+    // Get forecasts for today
+    DateTime now = DateTime.now();
+    var todayForecasts = forecasts.where((forecast) =>
+        forecast.dtTxt.day == now.day).toList();
+    
+    for (var forecast in todayForecasts) {
+      String hour = DateFormat('ha').format(forecast.dtTxt);
+      int temp = forecast.main.temp.round(); 
+      
+      hourlyWidgets.add(
+        TodayWeather(
+          text: hour,
+          image: forecast.weather[0].icon.toString(),
+          temp: temp.toString(),
+        ),
+      );
+    }
+    
+    return hourlyWidgets;
+}
+
+List<Widget> buildDailyForecast(List<ListElement> forecasts) {
+    List<Widget> dailyWidgets = [];
+    DateTime now = DateTime.now();
+    
+    // Group forecasts by day and get the middle of day temperature
+    var seenDates = <DateTime>{};
+    
+    for (var forecast in forecasts) {
+      var forecastDate = DateTime(forecast.dtTxt.year, forecast.dtTxt.month, forecast.dtTxt.day);
+      
+      if (!seenDates.contains(forecastDate) && forecastDate.isAfter(now)) {
+        seenDates.add(forecastDate);
+        
+        dailyWidgets.add(
+          ForecastDate(
+            day: DateFormat('MMMM d').format(forecastDate),
+            image: forecast.weather[0].icon.toString(),
+            temper: (forecast.main.temp - 273.15).round().toString(),
+          ),
+        );
+      }
+    }
+    
+    return dailyWidgets;
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +179,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                 ),
                               );
                             },
-                            icon: SizedBox(
+                            icon:const SizedBox(
                                 width: 21.33,
                                 height: 26,
                                 child: Icon(

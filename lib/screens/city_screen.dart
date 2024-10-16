@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 import '../utilities/constants.dart';
@@ -35,7 +35,6 @@ class _CityScreenState extends State<CityScreen> {
         condition == null ? '' : cityWeather.getWeatherIcon(condition);
     double temp = weatherData['main']['temp'];
     temperature = temp.toInt();
-    // ignore: unnecessary_null_comparison
     weatherMessage =
         temperature == null ? '' : cityWeather.getMessage(temperature);
     cityName = weatherData['name'];
