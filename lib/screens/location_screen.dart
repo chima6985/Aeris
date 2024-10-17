@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api, unused_local_variable, prefer_typing_uninitialized_variables
 
-import 'dart:convert';
 import 'dart:developer';
 import 'package:aeris/model/weather_data_model.dart' hide Icon;
 import 'package:aeris/screens/city_screen.dart';
@@ -12,6 +11,7 @@ import '../utilities/notification_modal.dart';
 import 'package:aeris/utilities/forecast_date.dart';
 import '../services/weather.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
 // import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -29,6 +29,8 @@ class _LocationScreenState extends State<LocationScreen> {
   late String weatherIcon;
   late String cityName;
   late String weatherMessage;
+  List<ListElement> dailyforcast = [];
+  List<ListElement> hourlyForcast = [];
 
   // Change bottomCardColor to active color on tap
   Color bottomCardColor = kInactiiveCardColor.withOpacity(0.05);
@@ -41,97 +43,34 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(weatherData) {
-    var condition = weatherData['weather'][0]['id'];
-    weatherIcon = condition == null ? '' : weather.getWeatherIcon(condition);
-    double temp = weatherData['main']['temp'];
-    temperature = temp.toInt();
-    // ignore: unnecessary_null_comparison
-    weatherMessage = temperature == null ? '' : weather.getMessage(temperature);
-    cityName = weatherData['name'];
-    log(temperature.toString());
+    setState(() {
+      var condition = weatherData['weather'][0]['id'];
+      weatherIcon = condition == null ? '' : weather.getWeatherIcon(condition);
+      double temp = weatherData['main']['temp'];
+      temperature = temp.toInt();
+      // ignore: unnecessary_null_comparison
+      weatherMessage =
+          temperature == null ? '' : weather.getMessage(temperature);
+      cityName = weatherData['name'];
+      log(temperature.toString());
+    });
   }
 
- Future<void> fetchData() async {
-    try {
-      Response modalapi = await get(Uri.parse(
-          'https://api.openweathermap.org/data/2.5/forecast?lat=37.42219983&lon=-122.084&appid=$apiKey&units=metric'));
-      
-      final weatherData = WeatherDataModel.fromJson(json.decode(modalapi.body));
-      
-      setState(() {
-        List<ListElement> forecasts = weatherData.list;
-        
-        if (forecasts.isNotEmpty) {
-          ListElement firstForecast = forecasts[0];
-
-          temperature = firstForecast.main.temp.round();
-          
-          if (firstForecast.weather.isNotEmpty) {
-            weatherIcon = firstForecast.weather[0].icon.toString();
-          }
-          
-          cityName = weatherData.city.name;
-          
-          weatherMessage = weather.getMessage(temperature);
-        }
-      });
-      
-    } catch (e) {
-      log('Error fetching weather data: $e');
-    }
-}
-
-
-
-  List<Widget> buildHourlyForecast(List<ListElement> forecasts) {
-    List<Widget> hourlyWidgets = [];
-    
-    // Get forecasts for today
-    DateTime now = DateTime.now();
-    var todayForecasts = forecasts.where((forecast) =>
-        forecast.dtTxt.day == now.day).toList();
-    
-    for (var forecast in todayForecasts) {
-      String hour = DateFormat('ha').format(forecast.dtTxt);
-      int temp = forecast.main.temp.round(); 
-      
-      hourlyWidgets.add(
-        TodayWeather(
-          text: hour,
-          image: forecast.weather[0].icon.toString(),
-          temp: temp.toString(),
-        ),
+  WeatherDataModel? weatherData;
+  void fetchData() async {
+    Response modalapi = await get((Uri.parse(
+        'https://api.openweathermap.org/data/2.5/forecast?lat=37.42219983&lon=-122.084&appid=$apiKey&units=metric')));
+    if (modalapi.statusCode == 200) {
+      final weatherFromJson = WeatherDataModel.fromJson(
+        json.decode(modalapi.body),
       );
+      setState(() {
+        weatherData = weatherFromJson;
+        log(weatherFromJson.city!.name.toString());
+      });
     }
-    
-    return hourlyWidgets;
-}
+  }
 
-List<Widget> buildDailyForecast(List<ListElement> forecasts) {
-    List<Widget> dailyWidgets = [];
-    DateTime now = DateTime.now();
-    
-    // Group forecasts by day and get the middle of day temperature
-    var seenDates = <DateTime>{};
-    
-    for (var forecast in forecasts) {
-      var forecastDate = DateTime(forecast.dtTxt.year, forecast.dtTxt.month, forecast.dtTxt.day);
-      
-      if (!seenDates.contains(forecastDate) && forecastDate.isAfter(now)) {
-        seenDates.add(forecastDate);
-        
-        dailyWidgets.add(
-          ForecastDate(
-            day: DateFormat('MMMM d').format(forecastDate),
-            image: forecast.weather[0].icon.toString(),
-            temper: (forecast.main.temp - 273.15).round().toString(),
-          ),
-        );
-      }
-    }
-    
-    return dailyWidgets;
-}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,7 +118,7 @@ List<Widget> buildDailyForecast(List<ListElement> forecasts) {
                                 ),
                               );
                             },
-                            icon:const SizedBox(
+                            icon: const SizedBox(
                                 width: 21.33,
                                 height: 26,
                                 child: Icon(
@@ -462,37 +401,19 @@ List<Widget> buildDailyForecast(List<ListElement> forecasts) {
                                   ),
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      TodayWeather(
-                                        text: '8 a.m',
-                                        image: weatherIcon,
-                                        temp: '28',
-                                      ),
+                                      for (int i = 0; i < 5; i++)
+                                        TodayWeather(
+                                            time: '8 a.m',
+                                            image: weatherIcon,
+                                            temp: weatherData == null
+                                                ? ''
+                                                : (weatherData!
+                                                    .list![i].main!.temp!
+                                                    .floor()
+                                                    .toString())),
                                       const SizedBox(width: 24),
-                                      TodayWeather(
-                                        text: '10 a.m',
-                                        image: weatherIcon,
-                                        temp: '28',
-                                      ),
-                                      const SizedBox(width: 24),
-                                      TodayWeather(
-                                        text: '12 a.m',
-                                        image: weatherIcon,
-                                        temp: '28',
-                                      ),
-                                      const SizedBox(width: 24),
-                                      TodayWeather(
-                                        text: '2 p.m',
-                                        image: weatherIcon,
-                                        temp: '29',
-                                      ),
-                                      const SizedBox(width: 24),
-                                      TodayWeather(
-                                        text: '4 p.m',
-                                        image: weatherIcon,
-                                        temp: '30',
-                                      )
                                     ],
                                   ),
                                   const SizedBox(
@@ -554,19 +475,19 @@ List<Widget> buildDailyForecast(List<ListElement> forecasts) {
                                               ForecastDate(
                                                   day: 'November 12',
                                                   image: weatherIcon,
-                                                  temper: '28'),
+                                                  temp: '28'),
                                               ForecastDate(
                                                   day: 'November 13',
                                                   image: weatherIcon,
-                                                  temper: '28'),
+                                                  temp: '28'),
                                               ForecastDate(
                                                   day: 'November 14',
                                                   image: weatherIcon,
-                                                  temper: '28'),
+                                                  temp: '28'),
                                               ForecastDate(
                                                   day: 'November 15',
                                                   image: weatherIcon,
-                                                  temper: '28'),
+                                                  temp: '28'),
                                             ],
                                           ),
                                         ),

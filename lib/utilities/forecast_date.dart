@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 class ForecastDate extends StatelessWidget {
   final String day;
   final String image;
-  final String temper;
+  final String temp;
   final bool isShowDivider;
 
   const ForecastDate({
     super.key,
     required this.day,
     required this.image,
-    required this.temper,
+    required this.temp,
     this.isShowDivider = true,
   });
 
@@ -41,7 +41,7 @@ class ForecastDate extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        temper,
+                        temp,
                         style: kMiddleContStyle.copyWith(
                             fontSize: 15,
                             fontWeight: FontWeight.w400,

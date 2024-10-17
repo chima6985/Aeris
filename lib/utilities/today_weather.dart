@@ -5,10 +5,10 @@ import 'constants.dart';
 
 class TodayWeather extends StatelessWidget {
   final String image;
-  final String text;
+  final String time;
   final String temp;
   const TodayWeather(
-      {super.key, required this.image, required this.text, required this.temp});
+      {super.key, required this.image, required this.time, required this.temp});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class TodayWeather extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.w700),
               )),
           Text(
-            text,
+            time,
             style: kMiddleContStyle.copyWith(fontSize: 12, color: Colors.black),
           )
         ],
