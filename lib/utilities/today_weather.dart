@@ -17,13 +17,16 @@ class TodayWeather extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                temp,
-                style: kMiddleContStyle.copyWith(
-                    color: Colors.black, fontSize: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: Text(
+                  temp,
+                  style: kMiddleContStyle.copyWith(
+                      color: Colors.black, fontSize: 16),
+                ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 4),
+                padding: const EdgeInsets.only(top: 4,right: 4),
                 child: Text(
                   '\u00B0\u1D9c',
                   style: kTextStyle.copyWith(fontSize: 20, color: Colors.black),
@@ -32,7 +35,7 @@ class TodayWeather extends StatelessWidget {
             ],
           ),
           Padding(
-              padding: const EdgeInsets.only(top: 13.86, bottom: 13.86),
+              padding: const EdgeInsets.only(top: 13.86, bottom: 13.86,right: 4),
               child: Text(
                 image,
                 style: const TextStyle(fontWeight: FontWeight.w700),
