@@ -26,7 +26,7 @@ class TodayWeather extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 4, right: 4),
+                padding: const EdgeInsets.only(top: 4,right: 4),
                 child: Text(
                   '\u00B0\u1D9c',
                   style: kTextStyle.copyWith(fontSize: 20, color: Colors.black),
@@ -35,8 +35,7 @@ class TodayWeather extends StatelessWidget {
             ],
           ),
           Padding(
-              padding:
-                  const EdgeInsets.only(top: 13.86, bottom: 13.86, right: 4),
+              padding: const EdgeInsets.only(top: 13.86, bottom: 13.86,right: 4),
               child: Text(
                 image,
                 style: const TextStyle(fontWeight: FontWeight.w700),
