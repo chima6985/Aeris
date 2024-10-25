@@ -100,7 +100,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     Row(
                       children: [
                         Container(
-                          height: 50,
+                          height: 48,
                           width: 48,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
